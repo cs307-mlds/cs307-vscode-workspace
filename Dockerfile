@@ -47,7 +47,7 @@ RUN apt-get update && \
 
 # Install Python 3.11 and related packages
 RUN apt-get install -y --no-install-recommends \
-    python3.11 python3.11-venv python3.11-dev
+    python3.11 python3.11-venv python3.11-dev python3.11-distutils
 
 # Make sure to build using bash as the shell so that conda/mamba hooks will
 # work during installation.
