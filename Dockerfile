@@ -32,13 +32,22 @@ RUN apt-get update && \
     find /tmp -not -path /tmp -delete
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    gosu curl git htop less nano unzip vim wget zip \
-    python3.11 python3.11-venv python3.11-dev && \
+    gosu curl git htop less nano unzip vim wget zip && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     find /tmp -not -path /tmp -delete && \
     # Test the gosu installation:
     gosu nobody true
+
+# Add deadsnakes PPA for Python 3.11
+RUN apt-get update && \
+    apt-get install -y software-properties-common && \
+    add-apt-repository ppa:deadsnakes/ppa && \
+    apt-get update
+
+# Install Python 3.11 and related packages
+RUN apt-get install -y --no-install-recommends \
+    python3.11 python3.11-venv python3.11-dev
 
 # Make sure to build using bash as the shell so that conda/mamba hooks will
 # work during installation.
