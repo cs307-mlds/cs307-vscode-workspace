@@ -32,7 +32,7 @@ RUN apt-get update && \
     find /tmp -not -path /tmp -delete
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    gosu curl git htop less nano unzip vim wget zip python3.11 && \
+    gosu curl git htop less nano unzip vim wget zip && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     find /tmp -not -path /tmp -delete && \
@@ -43,15 +43,26 @@ RUN apt-get update && \
 # work during installation.
 SHELL ["/bin/bash", "-c"]
 
-# Install Python and required packages via pip.
+# Install Python and required packages via miniconda.
 # This is a prerequisite for the VS Code extensions in the following steps.
 USER coder
 COPY requirements.txt /
-RUN python3.11 -m venv /home/coder/venv && \
-    . /home/coder/venv/bin/activate && \
-    pip install --upgrade pip && \
-    pip install -r /requirements.txt && \
-    pip cache purge
+RUN export arch=`uname -m` \
+ && curl -sfLO "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-${arch}.sh" \
+ && chmod +x "Miniforge3-Linux-${arch}.sh" \
+ && ./"Miniforge3-Linux-${arch}.sh" -b -p /home/coder/conda \
+ # Install conda and mamba hooks for future interactive bash sessions:
+ && /home/coder/conda/bin/mamba init bash \
+ # Activate hooks in the current noninteractive session:
+ && . "/home/coder/conda/etc/profile.d/conda.sh" \
+ && . "/home/coder/conda/etc/profile.d/mamba.sh" \
+ && mamba activate \
+ # Mamba can install pygraphviz without compile errors if we do so first, separately from the rest of the requirements:
+ && mamba install --yes --quiet $(grep pygraphviz /requirements.txt | head -n 1) \
+ && pip install -r /requirements.txt \
+ && rm "Miniforge3-Linux-${arch}.sh" \
+ && mamba clean --all --yes --quiet \
+ && pip cache purge
 
 # Install VS Code extensions and clear the extension cache to reduce image size.
 # We have first installed Python in the previous step, as specified in the
