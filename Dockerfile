@@ -32,7 +32,7 @@ RUN apt-get update && \
     find /tmp -not -path /tmp -delete
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    gosu curl git htop less nano unzip vim wget zip python3.11 python3.11-venv python3.11-dev python3-pip && \
+    gosu curl git htop less nano unzip vim wget zip python3.11 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     find /tmp -not -path /tmp -delete && \
