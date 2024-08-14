@@ -71,6 +71,8 @@ USER coder
 RUN code-server --disable-telemetry --force \
     # vscode support for python, including debugger
     --install-extension ms-python.python \
+    # vscode support for jupyter notebook
+    --install-extension ms-toolsai.jupyter \
     # auto-fix indentation for multiline contexts
     --install-extension KevinRose.vsc-python-indent \
     # visualize csv files in vscode window
