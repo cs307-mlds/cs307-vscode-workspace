@@ -39,15 +39,15 @@ RUN apt-get update && \
     # Test the gosu installation:
     gosu nobody true
 
-# Add deadsnakes PPA for Python 3.11
+# Add deadsnakes PPA for Python 3.12
 RUN apt-get update && \
     apt-get install -y software-properties-common && \
     add-apt-repository ppa:deadsnakes/ppa && \
     apt-get update
 
-# Install Python 3.11 and related packages
+# Install Python 3.12 and related packages
 RUN apt-get install -y --no-install-recommends \
-    python3.11 python3.11-venv python3.11-dev python3.11-distutils python3-pip
+    python3.12 python3.12-venv python3.12-dev python3.12-distutils python3-pip
 
 # Make sure to build using bash as the shell so that conda/mamba hooks will
 # work during installation.
@@ -56,9 +56,9 @@ SHELL ["/bin/bash", "-c"]
 # Install Python packages using pip.
 USER coder
 COPY requirements.txt /
-RUN python3.11 -m pip install --upgrade pip \
- && python3.11 -m pip install -r /requirements.txt \
- && python3.11 -m pip cache purge
+RUN python3.12 -m pip install --upgrade pip \
+ && python3.12 -m pip install -r /requirements.txt \
+ && python3.12 -m pip cache purge
 
 # Install VS Code extensions and clear the extension cache to reduce image size.
 # We have first installed Python in the previous step, as specified in the
