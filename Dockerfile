@@ -39,15 +39,9 @@ RUN apt-get update && \
     # Test the gosu installation:
     gosu nobody true
 
-# Add deadsnakes PPA for Python 3.12
-RUN apt-get update && \
-    apt-get install -y software-properties-common && \
-    add-apt-repository ppa:deadsnakes/ppa && \
-    apt-get update
-
-# Install Python 3.12 and related packages
+# Install Python and related packages
 RUN apt-get install -y --no-install-recommends \
-    python3.12 python3.12-venv python3.12-dev python3.12-distutils python3-pip
+    python python-venv python3.12-dev python-distutils python3-pip
 
 # Make sure to build using bash as the shell so that conda/mamba hooks will
 # work during installation.
