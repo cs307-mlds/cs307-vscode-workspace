@@ -53,10 +53,10 @@ SHELL ["/bin/bash", "-c"]
 # Install Python packages using pip.
 USER coder
 COPY requirements.txt .
-RUN python3.12 -m venv /home/coder/workspace/.venv && \
-    /home/coder/workspace/.venv/bin/pip3 install --upgrade pip && \
-    /home/coder/workspace/.venv/bin/pip3 install -r /home/coder/requirements.txt && \
-    /home/coder/workspace/.venv/bin/pip3 cache purge
+RUN python3.12 -m venv /home/coder/.venv && \
+    /home/coder/.venv/bin/pip3 install --upgrade pip && \
+    /home/coder/.venv/bin/pip3 install -r /home/coder/requirements.txt && \
+    /home/coder/.venv/bin/pip3 cache purge
 
 # Install VS Code extensions and clear the extension cache to reduce image size.
 # We have first installed Python in the previous step, as specified in the
