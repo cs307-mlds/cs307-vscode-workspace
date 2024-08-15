@@ -40,6 +40,8 @@ RUN apt-get update && \
     gosu nobody true
 
 # Update package list and install Python and related packages
+USER root
+ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 python3-venv python3-dev python3-pip && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -50,10 +52,11 @@ SHELL ["/bin/bash", "-c"]
 
 # Install Python packages using pip.
 USER coder
-COPY requirements.txt /
-RUN python3.12 -m pip install --upgrade pip \
- && python3.12 -m pip install -r /requirements.txt \
- && python3.12 -m pip cache purge
+COPY requirements.txt .
+RUN python3.12 -m venv /home/coder/.venv && \
+    /home/coder/.venv/bin/pip3 install --upgrade pip && \
+    /home/coder/.venv/bin/pip3 install -r /home/coder/requirements.txt && \
+    /home/coder/.venv/bin/pip3 cache purge
 
 # Install VS Code extensions and clear the extension cache to reduce image size.
 # We have first installed Python in the previous step, as specified in the
