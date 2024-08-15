@@ -41,7 +41,7 @@ RUN apt-get update && \
 
 # Install Python and related packages
 RUN apt-get install -y --no-install-recommends \
-    python python-venv python-dev python-distutils python3-pip
+    python3 python3-venv python3-dev python3-distutils python3-pip
 
 # Make sure to build using bash as the shell so that conda/mamba hooks will
 # work during installation.
