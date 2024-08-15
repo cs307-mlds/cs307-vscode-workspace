@@ -14,5 +14,8 @@
   "editor.fontSize": 16,
   "window.menuBarVisibility": "visible",
   "workbench.colorTheme": "Default Light Modern",
-  "python.defaultInterpreterPath": "~/.venv/bin/python3.12"
+  "jupyter.kernels.excludePythonEnvironments": [
+      "/bin/python3",
+      "/usr/bin/python3"
+    ]
 }
