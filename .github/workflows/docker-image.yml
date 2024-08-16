@@ -1,7 +1,6 @@
 on:
   workflow_dispatch:
   push:
-    # only trigger on main/master branches, not on tags
     branches: [main, master]
 
 name: "Build and Upload Docker Images"
@@ -25,10 +24,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       # https://github.com/marketplace/actions/build-and-push-docker-images
-      - name: Build and push daviddalpiaz/cs307-pl-workspace
+      - name: Build and push daviddalpiaz/cs307-vscode-workspace
         uses: docker/build-push-action@v2 
         with:
           platforms: linux/amd64
           push: true
           no-cache: true
-          tags: daviddalpiaz/cs307-pl-workspace:latest
+          tags: daviddalpiaz/cs307-vscode-workspace:latest

@@ -39,24 +39,29 @@ RUN apt-get update && \
     # Test the gosu installation:
     gosu nobody true
 
-# Update package list and install Python and related packages
-USER root
-ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    python3 python3-venv python3-dev python3-pip && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
-
 # Make sure to build using bash as the shell so that conda/mamba hooks will
 # work during installation.
 SHELL ["/bin/bash", "-c"]
 
-# Install Python packages using pip.
+# Install Python and required packages via miniconda.
+# This is a prerequisite for the VS Code extensions in the following steps.
 USER coder
-COPY requirements.txt .
-RUN python3.12 -m venv /home/coder/.venv && \
-    /home/coder/.venv/bin/pip3 install --upgrade pip && \
-    /home/coder/.venv/bin/pip3 install -r /home/coder/requirements.txt && \
-    /home/coder/.venv/bin/pip3 cache purge
+COPY requirements.txt /
+RUN export arch=`uname -m` \
+ && curl -sfLO "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-${arch}.sh" \
+ && chmod +x "Miniforge3-Linux-${arch}.sh" \
+ && ./"Miniforge3-Linux-${arch}.sh" -b -p /home/coder/conda \
+ # Install conda and mamba hooks for future interactive bash sessions:
+ && /home/coder/conda/bin/mamba init bash \
+ # Activate hooks in the current noninteractive session:
+ && . "/home/coder/conda/etc/profile.d/conda.sh" \
+ && . "/home/coder/conda/etc/profile.d/mamba.sh" \
+ && mamba activate \
+ && mamba install python=3.12.5 --yes \
+ && pip install -r /requirements.txt \
+ && rm "Miniforge3-Linux-${arch}.sh" \
+ && mamba clean --all --yes --quiet \
+ && pip cache purge
 
 # Install VS Code extensions and clear the extension cache to reduce image size.
 # We have first installed Python in the previous step, as specified in the
@@ -66,9 +71,7 @@ RUN code-server --disable-telemetry --force \
     # vscode support for python, including debugger
     --install-extension ms-python.python \
     # vscode support for jupyter notebook
-    --install-extension ms-toolsai.jupyter \
-    # auto-fix indentation for multiline contexts
-    --install-extension KevinRose.vsc-python-indent \
+    --install-extension ms-toolsai.jupyter \    --install-extension KevinRose.vsc-python-indent \
     # visualize csv files in vscode window
     --install-extension mechatroner.rainbow-csv \
     # format tables in markdown files
@@ -81,7 +84,7 @@ RUN code-server --disable-telemetry --force \
 USER coder
 RUN mkdir -p "/home/coder/workspace" "/home/coder/.local/share/code-server/User"
 WORKDIR "/home/coder/workspace"
-COPY --chmod=0644 --chown=coder:coder settings.json tasks.json /home/coder/.local/share/code-server/Machine/
+COPY --chmod=0644 --chown=coder:coder settings.json tasks.json /home/coder/.local/share/code-server/User/
 
 # Prepare the entrypoint helper that steps down to a limited user in local dev mode
 COPY --chmod=0755 --chown=root:root pl-gosu-helper.sh /usr/bin/
