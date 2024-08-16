@@ -1,5 +1,7 @@
-# cs307-pl-workspace
+# cs307-vscode-workspace
 
-PrairieLearn workspace with VSCode, Python, and Jupyter.
+PrairieLearn workspace with VSCode, Python, and Jupyter for use in [**CS 307**](https://cs307.org/) @ UIUC.
 
-Inspiration from: <https://github.com/Victorsss-Orz/PrairieLearn/tree/vscode-python-workspace/workspaces/vscode-python>
+Initial legwork done by [`Victorsss-Orz`](https://github.com/Victorsss-Orz) and [`echuber2`](https://github.com/echuber2):
+
+- [`Victorsss-Orz/PrairieLearn/tree/vscode-python-workspace`](https://github.com/Victorsss-Orz/PrairieLearn/tree/vscode-python-workspace/workspaces/vscode-python)
