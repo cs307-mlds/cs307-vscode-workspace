@@ -57,7 +57,7 @@ RUN export arch=`uname -m` \
  && . "/home/coder/conda/etc/profile.d/conda.sh" \
  && . "/home/coder/conda/etc/profile.d/mamba.sh" \
  && mamba activate \
- && mamba install python=3.12.5 --yes \
+ && mamba install python=3.12.8 --yes \
  && pip install -r /requirements.txt \
  && rm "Miniforge3-Linux-${arch}.sh" \
  && mamba clean --all --yes --quiet \
