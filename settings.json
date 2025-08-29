@@ -14,6 +14,7 @@
   "editor.fontSize": 16,
   "window.menuBarVisibility": "visible",
   "workbench.colorTheme": "Default Light Modern",
+  "notebook.output.scrolling": true,
   "jupyter.kernels.excludePythonEnvironments": [
       "/bin/python3",
       "/usr/bin/python3"

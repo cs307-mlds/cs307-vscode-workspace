@@ -1,0 +1,16 @@
+[project]
+name = "cs307-vscode-workspace"
+version = "0.1.0"
+description = "CS 307 VSCode Workspace"
+requires-python = "==3.13.*"
+dependencies = [
+    "joblib>=1.5.1",
+    "jupyter>=1.1.1",
+    "matplotlib>=3.10.5",
+    "numpy>=2.3.2",
+    "pandas>=2.3.2",
+    "pyarrow>=21.0.0",
+    "scikit-learn>=1.7.1",
+    "scipy>=1.16.1",
+    "seaborn>=0.13.2",
+]
