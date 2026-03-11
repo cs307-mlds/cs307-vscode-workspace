@@ -1,7 +1,7 @@
 [project]
 name = "cs307-vscode-workspace"
 version = "0.1.0"
-description = "CS 307 VSCode Workspace"
+description = "CS 307 VSCode Workspace."
 requires-python = "==3.13.*"
 dependencies = [
     "joblib>=1.5.1",
